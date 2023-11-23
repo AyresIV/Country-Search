@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+#searchInput {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#countriesContainer {
+    max-width: 600px;
+}
+
+.countryCard {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+#title
+{
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: #000000;
+}
