@@ -1,29 +1,65 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Search</title>
+    <script defer src="assets/js/main.js"></script>
     <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<h1 id="Title">Country Search</h1>
-<body>
-
-
-    <button id="allButton">All</button>
-<input type="text" id="searchInput" placeholder="Search for a country">
-
-    <div id="countries"></div>
-    <table id="countriesTable">
-        <tr>
-            <th>Name</th>
-            <th>Capital</th>
-            <th>Population</th>
-            <th>Region</th>
-        </tr>
-    </table>
-
-    <script src="assets/js/main.js"></script>
-
-</body>
+    <title>Country Search</title>
+  </head>
+  <body>
+    <h1>Country Search</h1>
+    <form>
+      <button type="button" id="all">All Countries</button>
+      <br>
+      <input type="text" id="searchCountry" placeholder="Search for a country">
+      <button type="button" id="search">Search</button>
+    </form>
+    <div class="static">
+      <h5 id="totalCountries"></h5>
+      <h5 id="totalPopulation"></h5>
+      <h4 id="averagePopulation"></h4>
+    </div>
+    <div class="front hide">
+      <div class="grid">
+        <div class="col-4">
+          <h3>Population and Currency:</h3>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Country</th>
+                <th>Population</th>
+                <th>Currencies</th>
+              </tr>
+            </thead>
+            <tbody id="countryx"></tbody>
+          </table>
+        </div>
+        <div class="col-4">
+          <h3>Countries on each Continent</h3>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Region</th>
+                <th>Number of countries</th>
+              </tr>
+            </thead>
+            <tbody id="region"></tbody>
+          </table>
+        </div>
+        <div class="col-4">
+          <h3>The Number of Countries that use the Same Currency</h3>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>Currencies</th>
+                <th>Number of countries</th>
+              </tr>
+            </thead>
+            <tbody id="currencies"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

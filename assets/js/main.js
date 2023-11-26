@@ -1,45 +1,89 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
+document.addEventListener('DOMContentLoaded', function () {
+    const allButton = document.getElementById('all');
+    const searchButton = document.getElementById('search');
+    allButton === null || allButton === void 0 ? void 0 : allButton.addEventListener('click', () => {
+        clearTableData();
+        country('all', '');
     });
-};
-function fetchCountries() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch("https://restcountries.com/v3.1/all");
-        const data = yield response.json();
-        const countries = data.map((countryData) => {
-            return {
-                name: countryData.name.common,
-                capital: countryData.capital,
-                population: countryData.population,
-                region: countryData.region,
-            };
-        });
-        return countries;
+    searchButton === null || searchButton === void 0 ? void 0 : searchButton.addEventListener('click', () => {
+        clearTableData();
+        const searchCountry = document.getElementById('searchCountry').value;
+        country('name', searchCountry);
     });
-}
-function displayCountries() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const countries = yield fetchCountries();
-            const countriesTable = document.getElementById('countriesTable');
-            countries.forEach((country) => {
-                const row = countriesTable.insertRow();
-                row.innerHTML = `
-                <td>${country.name}</td>
-                <td>${country.capital}</td>
-                <td>${country.population}</td>
-                <td>${country.region}</td>
-            `;
+    function clearTableData() {
+        clearElementContent('countryx');
+        clearElementContent('region');
+        clearElementContent('currencies');
+    }
+    function clearElementContent(elementId) {
+        const element = document.getElementById(elementId);
+        element.innerHTML = '';
+    }
+    function country(name, con) {
+        fetch(`https://restcountries.com/v3.1/${name}/${con}`)
+            .then(response => response.json())
+            .then((result) => {
+            let allPeople = 0;
+            const arryRegion = [];
+            const arryCurrencies = [];
+            clearElementContent('totalCountries');
+            clearElementContent('totalPopulation');
+            clearElementContent('averagePopulation');
+            clearElementContent('countryx');
+            clearElementContent('region');
+            clearElementContent('currencies');
+            result.forEach((element) => {
+                const keyCurrencies = element.currencies ? Object.keys(element.currencies)[0] : null;
+                if (keyCurrencies)
+                    arryCurrencies.push(keyCurrencies);
+                arryRegion.push(element.region);
+                allPeople += element.population;
+                appendTableRow('countryx', element.name.common, element.population, keyCurrencies);
             });
+            updateElementContent('totalCountries', `Total Countries Found: <p>${result.length}</p>`);
+            updateElementContent('totalPopulation', `Total Countries Population: <p>${allPeople}</p>`);
+            updateElementContent('averagePopulation', `Average Population: <p>${(allPeople / result.length).toFixed()}</p>`);
+            const region = regionCurrencies(arryRegion);
+            const currencies = regionCurrencies(arryCurrencies);
+            displayTableData(region, 'region');
+            displayTableData(currencies, 'currencies');
+            const frontElement = document.querySelector('.front');
+            frontElement === null || frontElement === void 0 ? void 0 : frontElement.classList.toggle('hide', !frontElement.classList.contains('hide'));
+        })
+            .catch(() => {
+            showErrorAlert();
+        });
+    }
+    function regionCurrencies(array) {
+        return array.reduce((acc, val) => {
+            acc[val] = (acc[val] || 0) + 1;
+            return acc;
+        }, {});
+    }
+    function displayTableData(data, elementId) {
+        const element = document.getElementById(elementId);
+        for (const [key, value] of Object.entries(data)) {
+            element === null || element === void 0 ? void 0 : element.insertAdjacentHTML('beforeend', `
+        <tr>
+          <td class="center">${key}</td>
+          <td class="center">${value}</td>
+        </tr>`);
         }
-        catch (error) {
-            console.error("Error fetching countries:", error);
-        }
-    });
-}
-displayCountries();
+    }
+    function showErrorAlert() {
+        alert('Couldn’t find any countries matching your search.');
+    }
+    function updateElementContent(elementId, content) {
+        const element = document.getElementById(elementId);
+        element === null || element === void 0 ? void 0 : element.insertAdjacentHTML('beforeend', content);
+    }
+    function appendTableRow(tableId, name, population, currency) {
+        const table = document.getElementById(tableId);
+        table === null || table === void 0 ? void 0 : table.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td class="first">${name}</td>
+        <td class="center">${population}</td>
+        <td class="center">${currency}</td>
+      </tr>`);
+    }
+});
