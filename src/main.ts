@@ -1,6 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
   const allButton = document.getElementById('all');
   const searchButton = document.getElementById('search');
+  const form = document.querySelector('form');
+  const searchCountryInput = document.getElementById('searchCountry') as HTMLInputElement;
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+  });
+
+  searchCountryInput?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      clearTableData();
+      const searchCountry = searchCountryInput.value;
+      country('name', searchCountry);
+    }
+  });
 
   allButton?.addEventListener('click', () => {
     clearTableData();
@@ -9,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   searchButton?.addEventListener('click', () => {
     clearTableData();
-    const searchCountry = (document.getElementById('searchCountry') as HTMLInputElement).value;
+    const searchCountry = searchCountryInput.value;
     country('name', searchCountry);
   });
 

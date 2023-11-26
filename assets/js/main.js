@@ -1,13 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
     const allButton = document.getElementById('all');
     const searchButton = document.getElementById('search');
+    const form = document.querySelector('form');
+    const searchCountryInput = document.getElementById('searchCountry');
+    form === null || form === void 0 ? void 0 : form.addEventListener('submit', (event) => {
+        event.preventDefault();
+    });
+    searchCountryInput === null || searchCountryInput === void 0 ? void 0 : searchCountryInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            clearTableData();
+            const searchCountry = searchCountryInput.value;
+            country('name', searchCountry);
+        }
+    });
     allButton === null || allButton === void 0 ? void 0 : allButton.addEventListener('click', () => {
         clearTableData();
         country('all', '');
     });
     searchButton === null || searchButton === void 0 ? void 0 : searchButton.addEventListener('click', () => {
         clearTableData();
-        const searchCountry = document.getElementById('searchCountry').value;
+        const searchCountry = searchCountryInput.value;
         country('name', searchCountry);
     });
     function clearTableData() {
